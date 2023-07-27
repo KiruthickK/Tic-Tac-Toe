@@ -10,10 +10,10 @@ public class Main {
         while (true) {
             game.StartGame(sc);
             System.out.print("Do You Want to play again?\n1 for yes, any other number to exit\nYour Opinion:");
-            // if (sc.nextInt() != 1) {
+            if (sc.nextInt() != 1) {
                 game.initiateBoard();
                 break;
-            // }
+            }
         }
         sc.close();
     }

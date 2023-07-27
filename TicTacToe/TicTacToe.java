@@ -5,6 +5,7 @@ import java.util.*;
 public class TicTacToe {
     private static final int fixed_size = 3;
     private char player, computer;
+    private boolean GameOver;
     private int steps;
     char board[][];
 
@@ -13,12 +14,14 @@ public class TicTacToe {
         steps = 0;
         player = 'x';
         computer = 'o';
+        GameOver = false;
         initiateBoard();
     }
 
     public TicTacToe(char option) {
         board = new char[fixed_size][fixed_size];
         steps = 0;
+        GameOver = false;
         if (option == 'x') {
             player = 'x';
             computer = 'o';
@@ -48,6 +51,7 @@ public class TicTacToe {
     private boolean insertBoard(int i, int j) {
         if (isIndexValid(i, j) && isIndexFree(i, j)) {
             board[i][j] = player;
+            steps++;
             return true;
         }
         System.out.println("The position has filled already or invalid index, try another position!");
@@ -55,7 +59,7 @@ public class TicTacToe {
     }
 
     private void printBoard() {
-        System.out.println("Tic Tac Toe now:");
+        System.out.println("Tic Tac Toe's current state is:");
         System.out.print("*======*\n");
         for (int i = 0; i < fixed_size; i++) {
             System.out.print("|");
@@ -67,14 +71,53 @@ public class TicTacToe {
         System.out.print("*======*\n");
     }
 
+    private void computerMove(){
+        int min = 0;  
+        int max = 2;  
+        if(steps == 9){
+            return;
+        }
+        int i = (int)(Math.random()*(max-min+1)+min), j = (int)(Math.random()*(max-min+1)+min);  
+        while(!isIndexFree(i, j)) {
+            i = (int)(Math.random()*(max-min+1)+min);
+            j = (int)(Math.random()*(max-min+1)+min);  
+        }
+        board[i][j] = computer;
+        steps++;
+    }
+    private void isGameOver(char lastplay){
+        // 6 cases to win for a player
+        // case 1 : 0th col filled by player's move
+        boolean win = true;
+        int i = 0,j = 0;
+        while(i<fixed_size){
+            if(board[i][j] != lastplay){
+                win = false;
+                break;
+            }
+            i++;
+        }
+        if(win){
+            winningMessage(lastplay);
+        }
+    }
+    private void winningMessage(char lastplay){
+        String msg = "";
+        if(lastplay == computer){
+            msg = "computer";
+        }else{
+            msg = "You";
+        }
+        System.out.println("Yay! congrats, "+msg+" won!");
+    }
     /**
      * Main function to play the game
      * this function will call the helper functions if needed
      */
     public void StartGame(Scanner sc) {
-        boolean GameOver = false;
         while (!GameOver) {
             if (steps == 9) {
+                System.out.println("\nMaximum moves have been reached!, Game Draw!");
                 GameOver = true;
                 return;
             }
@@ -84,12 +127,17 @@ public class TicTacToe {
                 continue;
             }
             printBoard();
+            isGameOver(player);
+            computerMove();
+            System.out.print("After my move, ");
+            printBoard();
+            isGameOver(computer);
         }
-        // sc.close();
     }
 
     public static void main(String[] args) {
         TicTacToe game = new TicTacToe();
-        game.StartGame(new Scanner(System.in));
+        // game.StartGame(new Scanner(System.in));
+        game.computerMove();
     }
 }
