@@ -249,7 +249,7 @@ public class TicTacToe {
                 return;
             }
             // time for computer's turn
-            // computerMove();
+            computerMove();
             System.out.print("After my move, ");
             printBoard();
             if (isGameOver(computer)) {

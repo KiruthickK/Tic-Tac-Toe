@@ -8,7 +8,12 @@ public class Main {
         while (true) {
             System.out.print(
                     "Welcome to Tic Tac Toe\nWhat you are choosing 'x' or 'o'?(Type x or o any other input will consider to be default settings):");
-            char option = sc.next().charAt(0);
+            String userChoice = sc.nextLine();
+            // to prevent java's string input error, where without input it will scan the empty space and proceed
+            while(userChoice == ""){
+                userChoice = sc.nextLine();
+            }
+            char option = userChoice.charAt(0);
             TicTacToe game;
             if(option == 'x' || option == 'o'){
                 game = new TicTacToe(option);
