@@ -146,11 +146,11 @@ public class TicTacToe {
         GameOver = true;
         String msg = "";
         if (lastplay == computer) {
-            msg = "computer";
+            msg = "ah oh, you lose, luck wont help me all the time, you may try again";
         } else {
-            msg = "You";
+            msg = "Yay congrats!, you won!! but may be next time i will try my best";
         }
-        System.out.println("Yay! congrats, " + msg + " won!");
+        System.out.println(msg);
     }
 
     /**
