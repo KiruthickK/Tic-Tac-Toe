@@ -56,12 +56,15 @@ public class TicTacToe {
 
     private void printBoard() {
         System.out.println("Tic Tac Toe now:");
+        System.out.print("*======*\n");
         for (int i = 0; i < fixed_size; i++) {
+            System.out.print("|");
             for (int j = 0; j < fixed_size; j++) {
                 System.out.print(board[i][j] + " ");
             }
-            System.out.println();
+            System.out.println("|");
         }
+        System.out.print("*======*\n");
     }
 
     /**
@@ -83,5 +86,10 @@ public class TicTacToe {
             printBoard();
         }
         // sc.close();
+    }
+
+    public static void main(String[] args) {
+        TicTacToe game = new TicTacToe();
+        game.StartGame(new Scanner(System.in));
     }
 }
