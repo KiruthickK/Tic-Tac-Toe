@@ -236,7 +236,7 @@ public class TicTacToe {
                 GameOver = true;
                 return;
             }
-            System.out.print("Enter position to insert 'x'(x , y seperated by spaces):");
+            System.out.print("Enter position to insert '"+player+"'(x position, y poition seperated by spaces):");
             int i = sc.nextInt(), j = sc.nextInt();
             // inserting user's charcter
             if (!insertBoard(i, j)) {
