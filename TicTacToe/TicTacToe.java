@@ -71,45 +71,88 @@ public class TicTacToe {
         System.out.print("*======*\n");
     }
 
-    private void computerMove(){
-        int min = 0;  
-        int max = 2;  
-        if(steps == 9){
+    private void computerMove() {
+        int min = 0;
+        int max = 2;
+        if (steps == 9) {
             return;
         }
-        int i = (int)(Math.random()*(max-min+1)+min), j = (int)(Math.random()*(max-min+1)+min);  
-        while(!isIndexFree(i, j)) {
-            i = (int)(Math.random()*(max-min+1)+min);
-            j = (int)(Math.random()*(max-min+1)+min);  
+        int i = (int) (Math.random() * (max - min + 1) + min), j = (int) (Math.random() * (max - min + 1) + min);
+        while (!isIndexFree(i, j)) {
+            i = (int) (Math.random() * (max - min + 1) + min);
+            j = (int) (Math.random() * (max - min + 1) + min);
         }
         board[i][j] = computer;
         steps++;
     }
-    private void isGameOver(char lastplay){
-        // 6 cases to win for a player
-        // case 1 : 0th col filled by player's move
+
+    private boolean isGameOver(char lastplay) {
         boolean win = true;
-        int i = 0,j = 0;
-        while(i<fixed_size){
-            if(board[i][j] != lastplay){
-                win = false;
-                break;
+        int i = 0, j = 0;
+        // 3 cases to win for a player
+        // case 1 : column wise check
+        while (j < fixed_size) {
+            while (i < fixed_size) {
+                if (board[i][j] != lastplay) {
+                    win = false;
+                    break;
+                }
+                i++;
+            }
+            if (win) {
+                winningMessage(lastplay);
+                return true;
+            }
+            j++;
+        }
+        // Case 2: row wise check
+        win = true;
+        i = j = 0;
+        while (i < fixed_size) {
+            while (j < fixed_size) {
+                if (board[i][j] != lastplay) {
+                    win = false;
+                    break;
+                }
+                j++;
+            }
+            if (win) {
+                winningMessage(lastplay);
+                return true;
             }
             i++;
         }
-        if(win){
-            winningMessage(lastplay);
+        // case 3: diagonal check
+        win = true;
+        i = j = 0;
+        while (i < fixed_size) {
+            if (board[i][j] != lastplay) {
+                win = false;
+                break;
+            }
+            // since we know board will be n x n matrix we are doing this
+            i++;
+            j++;
         }
+        if (win) {
+            winningMessage(lastplay);
+            return true;
+        }
+        return false;
+
     }
-    private void winningMessage(char lastplay){
+
+    private void winningMessage(char lastplay) {
+        GameOver = true;
         String msg = "";
-        if(lastplay == computer){
+        if (lastplay == computer) {
             msg = "computer";
-        }else{
+        } else {
             msg = "You";
         }
-        System.out.println("Yay! congrats, "+msg+" won!");
+        System.out.println("Yay! congrats, " + msg + " won!");
     }
+
     /**
      * Main function to play the game
      * this function will call the helper functions if needed
@@ -127,11 +170,15 @@ public class TicTacToe {
                 continue;
             }
             printBoard();
-            isGameOver(player);
+            if(isGameOver(player)){
+                return;
+            }
             computerMove();
             System.out.print("After my move, ");
             printBoard();
-            isGameOver(computer);
+            if(isGameOver(computer)){
+                return;
+            }
         }
     }
 
